@@ -20,7 +20,7 @@ public class TodoResponseDto {
         this.title = todo.getTitle();
         this.content = todo.getContent();
         this.createdAt = todo.getCreatedAt();
-        this.modifiedAt = todo.getModifiedat();
+        this.modifiedAt = todo.getModifiedAt();
     }
 
     public TodoResponseDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {

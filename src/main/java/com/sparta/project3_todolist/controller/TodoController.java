@@ -24,7 +24,7 @@ public class TodoController {
         Todo todo = new Todo(requestDto);
 
         // Todo Max ID Check
-        Long maxId = todoList.size() > 0 ? Collections.max(todoList.keySet()) + 1 : 1;
+        Long maxId = !todoList.isEmpty() ? Collections.max(todoList.keySet()) + 1 : 1;
         todo.setId(maxId);
 
         // DB 저장

@@ -15,7 +15,7 @@ public class Todo {
     private String title;
     private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedat;
+    private LocalDateTime modifiedAt;
 
     public Todo(TodoRequestDto requestDto) {
         this.title = requestDto.getTitle();
