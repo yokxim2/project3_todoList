@@ -9,5 +9,4 @@ public class Project3TodoListApplication {
     public static void main(String[] args) {
         SpringApplication.run(Project3TodoListApplication.class, args);
     }
-
 }
