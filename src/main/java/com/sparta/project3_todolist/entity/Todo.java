@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -18,6 +19,8 @@ public class Todo {
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Todo(TodoRequestDto requestDto) {
         this.title = requestDto.getTitle();
@@ -32,5 +35,13 @@ public class Todo {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public String getFormattedCreatedAt() {
+        return createdAt.format(formatter);
+    }
+
+    public String getFormattedModifiedAt() {
+        return modifiedAt.format(formatter);
     }
 }
