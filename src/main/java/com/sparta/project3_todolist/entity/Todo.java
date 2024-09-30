@@ -20,5 +20,13 @@ public class Todo {
     public Todo(TodoRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void update(TodoRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.modifiedAt = LocalDateTime.now();
     }
 }
