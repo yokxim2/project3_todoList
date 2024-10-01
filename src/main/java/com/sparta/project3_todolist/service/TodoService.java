@@ -5,7 +5,6 @@ import com.sparta.project3_todolist.dto.TodoResponseDto;
 import com.sparta.project3_todolist.entity.Todo;
 import com.sparta.project3_todolist.repository.TodoRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,8 +16,8 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
-    public TodoService(JdbcTemplate jdbcTemplate) {
-        this.todoRepository = new TodoRepository(jdbcTemplate);
+    public TodoService(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
     }
 
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {

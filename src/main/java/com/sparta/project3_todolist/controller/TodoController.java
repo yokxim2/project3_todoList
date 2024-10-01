@@ -3,10 +3,8 @@ package com.sparta.project3_todolist.controller;
 import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.dto.TodoResponseDto;
 import com.sparta.project3_todolist.service.TodoService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -15,8 +13,8 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    public TodoController(JdbcTemplate jdbcTemplate) {
-        this.todoService = new TodoService(jdbcTemplate);
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     @PostMapping("/todos")
