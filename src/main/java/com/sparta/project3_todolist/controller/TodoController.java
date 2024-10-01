@@ -2,19 +2,11 @@ package com.sparta.project3_todolist.controller;
 
 import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.dto.TodoResponseDto;
-import com.sparta.project3_todolist.entity.Todo;
 import com.sparta.project3_todolist.service.TodoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

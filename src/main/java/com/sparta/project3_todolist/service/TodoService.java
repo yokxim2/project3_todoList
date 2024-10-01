@@ -6,15 +6,10 @@ import com.sparta.project3_todolist.entity.Todo;
 import com.sparta.project3_todolist.repository.TodoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
