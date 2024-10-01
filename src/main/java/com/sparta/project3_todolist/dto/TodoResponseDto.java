@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class TodoResponseDto {
     private Long id;
+    private String username;
     private String title;
     private String content;
     private String createdAt;
@@ -13,14 +14,16 @@ public class TodoResponseDto {
 
     public TodoResponseDto(Todo todo) {
         this.id = todo.getId();
+        this.username = todo.getUsername();
         this.title = todo.getTitle();
         this.content = todo.getContent();
         this.createdAt = todo.getFormattedCreatedAt();
         this.modifiedAt = todo.getFormattedModifiedAt();
     }
 
-    public TodoResponseDto(Long id, String title, String content, String createdAt, String modifiedAt) {
+    public TodoResponseDto(Long id, String username, String title, String content, String createdAt, String modifiedAt) {
         this.id = id;
+        this.username = username;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;

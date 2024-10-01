@@ -91,6 +91,7 @@ public class TodoController {
                 queryParams.toArray(),
                 (rs, rowNum) -> new TodoResponseDto(
                         rs.getLong("id"),
+                        rs.getString("username"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getTimestamp("created_at").toString(),
