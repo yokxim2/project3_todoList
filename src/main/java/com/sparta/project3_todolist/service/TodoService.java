@@ -4,6 +4,7 @@ import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.dto.TodoResponseDto;
 import com.sparta.project3_todolist.entity.Todo;
 import com.sparta.project3_todolist.repository.TodoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,13 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TodoService {
 
     private final TodoRepository todoRepository;
-
-    public TodoService(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
-    }
 
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {
         // RequestDto -> Entity(Todo)

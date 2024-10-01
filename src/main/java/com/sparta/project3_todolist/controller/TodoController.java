@@ -3,19 +3,17 @@ package com.sparta.project3_todolist.controller;
 import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.dto.TodoResponseDto;
 import com.sparta.project3_todolist.service.TodoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class TodoController {
 
     private final TodoService todoService;
-
-    public TodoController(TodoService todoService) {
-        this.todoService = todoService;
-    }
 
     @PostMapping("/todos")
     public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto) {
