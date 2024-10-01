@@ -15,10 +15,10 @@ import java.util.List;
 @Service
 public class TodoService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final TodoRepository todoRepository;
 
     public TodoService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.todoRepository = new TodoRepository(jdbcTemplate);
     }
 
     public TodoResponseDto createTodo(TodoRequestDto requestDto) {
@@ -26,7 +26,6 @@ public class TodoService {
         Todo todo = new Todo(requestDto);
 
         // DB 저장
-        TodoRepository todoRepository = new TodoRepository(jdbcTemplate);
         Todo saveTodo = todoRepository.save(todo);
 
         // Entity -> ResponseDto
@@ -36,12 +35,10 @@ public class TodoService {
     }
 
     public List<TodoResponseDto> getTodos(@RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
-        TodoRepository todoRepository = new TodoRepository(jdbcTemplate);
         return todoRepository.findAll(username, modifiedAt);
     }
 
     public Long updateTodo(Long id, TodoRequestDto requestDto) {
-        TodoRepository todoRepository = new TodoRepository(jdbcTemplate);
         // 해당 todo가 DB에 존재하는지 확인
         Todo todo = todoRepository.findById(id);
 
@@ -60,7 +57,6 @@ public class TodoService {
     }
 
     public Long deleteTodo(Long id, TodoRequestDto requestDto) {
-        TodoRepository todoRepository = new TodoRepository(jdbcTemplate);
         // 해당 todo가 DB에 존재하는지 확인
         Todo todo = todoRepository.findById(id);
         if (todo != null) {

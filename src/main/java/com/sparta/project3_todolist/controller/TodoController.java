@@ -13,34 +13,29 @@ import java.util.List;
 @RequestMapping("/api")
 public class TodoController {
 
-    private final JdbcTemplate jdbcTemplate;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final TodoService todoService;
 
     public TodoController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.todoService = new TodoService(jdbcTemplate);
     }
 
     @PostMapping("/todos")
     public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto) {
-        TodoService todoService = new TodoService(jdbcTemplate);
         return todoService.createTodo(requestDto);
     }
 
     @GetMapping("/todos")
     public List<TodoResponseDto> getTodos(@RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
-        TodoService todoService = new TodoService(jdbcTemplate);
         return todoService.getTodos(username, modifiedAt);
     }
 
     @PutMapping("/todos/{id}")
     public Long updateTodo(@PathVariable Long id, @RequestBody TodoRequestDto requestDto) {
-        TodoService todoService = new TodoService(jdbcTemplate);
         return todoService.updateTodo(id, requestDto);
     }
 
     @DeleteMapping("/todos/{id}")
     public Long deleteTodo(@PathVariable Long id, @RequestBody TodoRequestDto requestDto) {
-        TodoService todoService = new TodoService(jdbcTemplate);
         return todoService.deleteTodo(id, requestDto);
     }
 }
