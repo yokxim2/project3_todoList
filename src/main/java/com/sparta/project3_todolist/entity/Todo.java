@@ -32,7 +32,7 @@ public class Todo {
     }
 
     public void update(TodoRequestDto requestDto) {
-        this.title = requestDto.getTitle();
+        this.username = requestDto.getUsername();
         this.content = requestDto.getContent();
         this.modifiedAt = LocalDateTime.now();
     }
