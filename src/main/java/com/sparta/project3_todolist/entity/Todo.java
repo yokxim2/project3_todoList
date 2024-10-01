@@ -31,12 +31,6 @@ public class Todo {
         this.modifiedAt = LocalDateTime.now();
     }
 
-    public void update(TodoRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.content = requestDto.getContent();
-        this.modifiedAt = LocalDateTime.now();
-    }
-
     public String getFormattedCreatedAt() {
         return createdAt.format(formatter);
     }
