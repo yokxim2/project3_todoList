@@ -13,10 +13,9 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class Todo {
     private Long id;
+    private Long memberId;
     private String title;
     private String content;
-    private String username;
-    private String password;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -25,8 +24,6 @@ public class Todo {
     public Todo(TodoRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.username = requestDto.getUsername();
-        this.password = requestDto.getPassword();
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
     }
