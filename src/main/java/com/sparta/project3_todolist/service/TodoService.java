@@ -82,11 +82,22 @@ public class TodoService {
         if (member.getPassword().equals(requestDto.getPassword())) {
             // todo 삭제
             todoRepository.delete(todoId);
-            // member 삭제
-            memberRepository.delete(member.getId());
+            // 해당 member가 작성했던 글이 하나도 남지 않은 경우 member 삭제
+            this.deleteMemberIfNoPosts(member.getId());
+
             return todoId;
         } else {
             throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+        }
+    }
+
+    private void deleteMemberIfNoPosts(Long id) {
+        // memberId로 해당 멤버가 작성한 모든 Todo를 찾음
+        List<Todo> todoList = memberRepository.findTodosByMemberId(id);
+
+        // 작성한 Todo가 없다면 해당 멤버 삭제
+        if (todoList.isEmpty()) {
+            memberRepository.delete(id);
         }
     }
 }
