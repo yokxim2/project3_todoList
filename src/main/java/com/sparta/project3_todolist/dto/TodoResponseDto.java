@@ -1,5 +1,6 @@
 package com.sparta.project3_todolist.dto;
 
+import com.sparta.project3_todolist.entity.Member;
 import com.sparta.project3_todolist.entity.Todo;
 import lombok.Getter;
 
@@ -12,9 +13,9 @@ public class TodoResponseDto {
     private String createdAt;
     private String modifiedAt;
 
-    public TodoResponseDto(Todo todo) {
+    public TodoResponseDto(Todo todo, Member member) {
         this.id = todo.getId();
-        this.username = todo.getUsername();
+        this.username = member.getUsername();
         this.title = todo.getTitle();
         this.content = todo.getContent();
         this.createdAt = todo.getFormattedCreatedAt();
