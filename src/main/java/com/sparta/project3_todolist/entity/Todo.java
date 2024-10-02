@@ -28,6 +28,15 @@ public class Todo {
         this.modifiedAt = LocalDateTime.now();
     }
 
+    public Todo(long id, long memberId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.id = id;
+        this.memberId = memberId;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
     public String getFormattedCreatedAt() {
         return createdAt.format(formatter);
     }
