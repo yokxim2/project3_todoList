@@ -6,6 +6,7 @@ import com.sparta.project3_todolist.entity.Todo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,7 +49,7 @@ public class TodoRepository {
         return todo;
     }
 
-    public List<TodoResponseDto> findAll(@RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
+    public List<TodoResponseDto> findAll(@Nullable String username, @Nullable String modifiedAt) {
         // SQL 쿼리 작성
         StringBuilder query = new StringBuilder("SELECT t.*");
 
