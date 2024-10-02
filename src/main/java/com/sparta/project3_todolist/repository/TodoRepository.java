@@ -25,19 +25,18 @@ public class TodoRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Todo save(Todo todo) {
+    public Todo save(Todo todo, Long memberId) {
         // DB 저장
         KeyHolder keyHolder = new GeneratedKeyHolder();         // 기본 키를 반환받기 위한 객체
 
-        String sql = "INSERT INTO todo (title, content, username, password, created_at, modified_at) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO todo (member_id, title, content, created_at, modified_at) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update( con -> {
                     PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                    preparedStatement.setString(1, todo.getTitle());
-                    preparedStatement.setString(2, todo.getContent());
-                    preparedStatement.setString(3, todo.getUsername());
-                    preparedStatement.setString(4, todo.getPassword());
-                    preparedStatement.setString(5, todo.getFormattedCreatedAt());
-                    preparedStatement.setString(6, todo.getFormattedModifiedAt());
+                    preparedStatement.setLong(1, memberId);
+                    preparedStatement.setString(2, todo.getTitle());
+                    preparedStatement.setString(3, todo.getContent());
+                    preparedStatement.setString(4, todo.getFormattedCreatedAt());
+                    preparedStatement.setString(5, todo.getFormattedModifiedAt());
                     return preparedStatement;
                 },
                 keyHolder);
@@ -51,20 +50,22 @@ public class TodoRepository {
 
     public List<TodoResponseDto> findAll(@RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
         // SQL 쿼리 작성
-        StringBuilder query = new StringBuilder("SELECT * FROM todo WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT t.*");
 
-        // 조건 1: 작성자명 조건 추가
+        // 조건 1: 작성자명 조건 추가 (member 테이블과 join)
         if (username != null && !username.isEmpty()) {
-            query.append(" AND username = ?");
+            query.append(", m.username FROM todo t JOIN member m ON t.member_id = m.id WHERE m.username = ?");
+        } else {
+            query.append(", m.username FROM todo t JOIN member m ON t.member_id = m.id WHERE 1 = 1");
         }
 
         // 조건 2: 수정일 조건 추가
         if (modifiedAt != null && !modifiedAt.isEmpty()) {
-            query.append(" AND DATE(modified_at) = ?");
+            query.append(" AND DATE(t.modified_at) = ?");
         }
 
         // 수정일 내림차순 정렬
-        query.append(" ORDER BY modified_at DESC");
+        query.append(" ORDER BY t.modified_at DESC");
 
         // 쿼리 파라미터 설정
         List<Object> queryParams = new ArrayList<>();
@@ -79,7 +80,8 @@ public class TodoRepository {
         List<TodoResponseDto> responseList = jdbcTemplate.query(
                 query.toString(),
                 queryParams.toArray(),
-                (rs, rowNum) -> new TodoResponseDto(
+                (rs, rowNum) ->
+                        new TodoResponseDto(
                         rs.getLong("id"),
                         rs.getString("username"),
                         rs.getString("title"),
@@ -94,8 +96,8 @@ public class TodoRepository {
 
     public void update(Long id, TodoRequestDto requestDto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String sql = "UPDATE todo SET username = ?, content = ?, modified_at = ? WHERE id = ?";
-        jdbcTemplate.update(sql, requestDto.getUsername(), requestDto.getContent(), LocalDateTime.now().format(formatter), id);
+        String sql = "UPDATE todo SET content = ?, modified_at = ? WHERE id = ?";
+        jdbcTemplate.update(sql, requestDto.getContent(), LocalDateTime.now().format(formatter), id);
     }
 
     public void delete(Long id) {
@@ -103,23 +105,23 @@ public class TodoRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    public Todo findById(Long id) {
+    public Todo findById(Long todoId) {
         // DB 조회
         String sql = "SELECT * FROM todo WHERE id = ?";
 
         return jdbcTemplate.query(sql, resultSet -> {
             if(resultSet.next()) {
                 Todo todo = new Todo();
+                todo.setId(resultSet.getLong("id"));
+                todo.setMemberId(resultSet.getLong("member_id"));
                 todo.setTitle(resultSet.getString("title"));
                 todo.setContent(resultSet.getString("content"));
-                todo.setUsername(resultSet.getString("username"));
-                todo.setPassword(resultSet.getString("password"));
                 todo.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
                 todo.setModifiedAt(resultSet.getTimestamp("modified_at").toLocalDateTime());
                 return todo;
             } else {
-                return null;
+                throw new IllegalArgumentException("일치하는 일정이 없습니다.");
             }
-        }, id);
+        }, todoId);
     }
 }
