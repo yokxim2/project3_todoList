@@ -2,6 +2,7 @@ package com.sparta.project3_todolist.repository;
 
 import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.entity.Member;
+import com.sparta.project3_todolist.entity.Todo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -96,5 +97,19 @@ public class MemberRepository {
                 throw new IllegalArgumentException("일치하는 회원이 없습니다.");
             }
         }, memberId);
+    }
+
+    public List<Todo> findTodosByMemberId(Long memberId) {
+        String sql = "SELECT * FROM todo WHERE member_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{memberId}, (rs, rowNum) ->
+                new Todo(
+                        rs.getLong("id"),
+                        rs.getLong("member_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("modified_at").toLocalDateTime()
+                )
+        );
     }
 }
