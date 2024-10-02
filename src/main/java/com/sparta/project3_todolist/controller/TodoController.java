@@ -4,6 +4,7 @@ import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.dto.TodoResponseDto;
 import com.sparta.project3_todolist.service.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +22,8 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<TodoResponseDto> getTodos(@RequestParam(required = false) Long pageNum, @RequestParam(required = false) Long pageSize,
-                                          @RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
-        return todoService.getTodos(pageNum, pageSize, username, modifiedAt);
+    public List<TodoResponseDto> getTodos(Page page, @RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
+        return todoService.getTodos(page, username, modifiedAt);
     }
 
     @PutMapping("/todos/{id}")

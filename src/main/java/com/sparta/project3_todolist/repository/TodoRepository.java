@@ -48,11 +48,7 @@ public class TodoRepository {
         return todo;
     }
 
-    public List<TodoResponseDto> findAll(Long pageNum, Long pageSize, @Nullable String username, @Nullable String modifiedAt) {
-        // 페이징 인덱스 계산
-        Long start = (pageNum - 1) * pageSize;
-        Long end = pageSize;
-
+    public List<TodoResponseDto> findAll(Long offset, Long limit, @Nullable String username, @Nullable String modifiedAt) {
         // SQL 쿼리 작성
         StringBuilder query = new StringBuilder("SELECT t.*");
 
@@ -69,7 +65,7 @@ public class TodoRepository {
         }
 
         // 수정일 내림차순 정렬 + 페이징 인덱스 LIMIT 사용
-        query.append(" ORDER BY t.modified_at DESC LIMIT ").append(start).append(", ").append(end);
+        query.append(" ORDER BY t.modified_at DESC LIMIT ").append(offset).append(", ").append(limit);
 
         // 쿼리 파라미터 설정
         List<Object> queryParams = new ArrayList<>();

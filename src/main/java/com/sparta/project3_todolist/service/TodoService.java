@@ -6,6 +6,7 @@ import com.sparta.project3_todolist.entity.Member;
 import com.sparta.project3_todolist.entity.Todo;
 import com.sparta.project3_todolist.repository.MemberRepository;
 import com.sparta.project3_todolist.repository.TodoRepository;
+import com.sparta.project3_todolist.utility.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -42,14 +43,8 @@ public class TodoService {
         return todoResponseDto;
     }
 
-    public List<TodoResponseDto> getTodos(@Nullable Long pageNum, @Nullable Long pageSize, @Nullable String username, @Nullable String modifiedAt) {
-        if (pageNum == null) {
-            pageNum = 1L;
-        }
-        if (pageSize == null) {
-            pageSize = 10L;
-        }
-        return todoRepository.findAll(pageNum, pageSize, username, modifiedAt);
+    public List<TodoResponseDto> getTodos(Page page, @Nullable String username, @Nullable String modifiedAt) {
+        return todoRepository.findAll(page.getOffset(), page.getPageSize(), username, modifiedAt);
     }
 
     public Long updateTodo(Long todoId, TodoRequestDto requestDto) {
