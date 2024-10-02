@@ -21,8 +21,9 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<TodoResponseDto> getTodos(@RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
-        return todoService.getTodos(username, modifiedAt);
+    public List<TodoResponseDto> getTodos(@RequestParam(required = false) Long pageNum, @RequestParam(required = false) Long pageSize,
+                                          @RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
+        return todoService.getTodos(pageNum, pageSize, username, modifiedAt);
     }
 
     @PutMapping("/todos/{id}")
