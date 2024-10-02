@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 public class Member {
     private Long id;
     private String username;
+    private String email;
     private String password;
     private LocalDateTime registeredAt;
     private LocalDateTime modifiedAt;
@@ -22,9 +23,16 @@ public class Member {
 
     public Member(TodoRequestDto requestDto) {
         this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
         this.password = requestDto.getPassword();
         this.registeredAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public Member(long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
     }
 
     public String getFormattedRegisteredAt() {
