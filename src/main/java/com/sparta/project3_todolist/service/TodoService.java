@@ -25,7 +25,15 @@ public class TodoService {
         Member member = new Member(requestDto);
 
         // DB 저장
-        Member saveMember = memberRepository.save(member);
+        Member saveMember;
+        try {
+            saveMember = memberRepository.save(member); // 이메일과 멤버 정보 검증 및 저장
+        } catch (IllegalArgumentException e) {
+            // 예외가 발생한 경우에는 일정 저장 중단
+            throw new IllegalArgumentException("일정 저장에 실패했습니다. " + e.getMessage());
+        }
+
+        // 멤버가 정상적으로 저장된 경우에만 Todo 저장
         Todo saveTodo = todoRepository.save(todo, saveMember.getId());
 
         // Entity -> ResponseDto

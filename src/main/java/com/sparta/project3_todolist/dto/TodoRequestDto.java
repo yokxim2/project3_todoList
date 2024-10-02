@@ -7,5 +7,6 @@ public class TodoRequestDto {
     private String title;
     private String content;
     private String username;
+    private String email;
     private String password;
 }
