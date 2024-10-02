@@ -8,7 +8,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -49,7 +48,11 @@ public class TodoRepository {
         return todo;
     }
 
-    public List<TodoResponseDto> findAll(@Nullable String username, @Nullable String modifiedAt) {
+    public List<TodoResponseDto> findAll(Long pageNum, Long pageSize, @Nullable String username, @Nullable String modifiedAt) {
+        // 페이징 인덱스 계산
+        Long start = (pageNum - 1) * pageSize;
+        Long end = pageSize;
+
         // SQL 쿼리 작성
         StringBuilder query = new StringBuilder("SELECT t.*");
 
@@ -65,8 +68,8 @@ public class TodoRepository {
             query.append(" AND DATE(t.modified_at) = ?");
         }
 
-        // 수정일 내림차순 정렬
-        query.append(" ORDER BY t.modified_at DESC");
+        // 수정일 내림차순 정렬 + 페이징 인덱스 LIMIT 사용
+        query.append(" ORDER BY t.modified_at DESC LIMIT ").append(start).append(", ").append(end);
 
         // 쿼리 파라미터 설정
         List<Object> queryParams = new ArrayList<>();
