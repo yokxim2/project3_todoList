@@ -7,10 +7,8 @@ import com.sparta.project3_todolist.entity.Todo;
 import com.sparta.project3_todolist.repository.MemberRepository;
 import com.sparta.project3_todolist.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,8 +34,14 @@ public class TodoService {
         return todoResponseDto;
     }
 
-    public List<TodoResponseDto> getTodos(@RequestParam(required = false) String username, @RequestParam(required = false) String modifiedAt) {
-        return todoRepository.findAll(username, modifiedAt);
+    public List<TodoResponseDto> getTodos(@Nullable Long pageNum, @Nullable Long pageSize, @Nullable String username, @Nullable String modifiedAt) {
+        if (pageNum == null) {
+            pageNum = 1L;
+        }
+        if (pageSize == null) {
+            pageSize = 10L;
+        }
+        return todoRepository.findAll(pageNum, pageSize, username, modifiedAt);
     }
 
     public Long updateTodo(Long todoId, TodoRequestDto requestDto) {
@@ -55,7 +59,7 @@ public class TodoService {
             memberRepository.update(member.getId(), requestDto);
             return todoId;
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 올바르지 않습니다.");
+            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
         }
     }
 
@@ -74,7 +78,7 @@ public class TodoService {
             memberRepository.delete(member.getId());
             return todoId;
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 올바르지 않습니다.");
+            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
         }
     }
 }
