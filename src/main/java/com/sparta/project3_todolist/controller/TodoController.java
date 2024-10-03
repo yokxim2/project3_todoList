@@ -4,9 +4,8 @@ import com.sparta.project3_todolist.dto.TodoRequestDto;
 import com.sparta.project3_todolist.dto.TodoResponseDto;
 import com.sparta.project3_todolist.service.TodoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
+import com.sparta.project3_todolist.utility.Page;
 import java.util.List;
 
 @RestController
